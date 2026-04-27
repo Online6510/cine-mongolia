@@ -23,8 +23,8 @@ const sampleMovieData = [
     "embedSrc": "https://www.youtube.com/embed/eRsGyueVLvQ",
     "desc": "Синтел нэртэй охин найз болсон бяцхан луугаа хайхаар аюултай аялалд гарна. Найз нөхөрлөл, алдагдал, цаг хугацааны тухай 3D fantasy богино кино.",
     "views": 928217,
-    "img": "https://i.ytimg.com/vi/eRsGyueVLvQ/hqdefault.jpg",
-    "imgWide": "https://i.ytimg.com/vi/eRsGyueVLvQ/maxresdefault.jpg",
+    "img": "https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
+    "imgWide": "https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg",
     "videoSrc": ""
   },
   {
