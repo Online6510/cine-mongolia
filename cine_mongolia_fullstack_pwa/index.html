@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="mn" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050505" />
+  <title>Cine Mongolia — Full Stack Streaming PWA</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Үндсэн хэсэг рүү алгасах</a>
+
+  <div id="loading" class="loading-screen" aria-live="polite">
+    <div class="loading-logo">Cine Mongolia</div>
+    <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+    <p>Өгөгдлийн сан ачаалж байна...</p>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <nav class="navbar" id="navbar" aria-label="Main navigation">
+    <button class="icon-button mobile-menu" data-action="toggle-mobile" aria-label="Цэс нээх">☰</button>
+    <a class="logo" href="#" data-action="tab" data-tab="home" aria-label="Cine Mongolia home">Cine Mongolia</a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" class="active" data-action="tab" data-tab="home">Нүүр</a></li>
+      <li><a href="#" data-action="tab" data-tab="movies">Кино</a></li>
+      <li><a href="#" data-action="tab" data-tab="watchlist">Миний жагсаалт</a></li>
+      <li><a href="#" data-action="tab" data-tab="history">Үзсэн түүх</a></li>
+      <li><a href="#" data-action="tab" data-tab="profiles">Профайл</a></li>
+      <li><a href="#" data-action="tab" data-tab="plans">Төлбөр</a></li>
+      <li><a href="#" data-action="tab" data-tab="admin" data-admin-only>Admin</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <button class="nav-search" data-action="open-search" aria-label="Хайлт нээх">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Хайх...</span>
+      </button>
+      <button class="icon-button" data-action="notify-demo" title="Push notification simulation">🔔</button>
+      <button class="avatar" id="avatarBtn" data-action="open-auth" aria-label="Нэвтрэх">?</button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="hero view active" id="view-home" aria-labelledby="heroTitle">
+      <div class="hero-bg" id="heroBg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-overlay2"></div>
+      <div class="hero-content" id="heroContent"></div>
+      <div class="hero-strip" id="heroStrip" aria-label="Онцлох кинонууд"></div>
+      <div class="hero-progress"><div class="hero-progress-bar" id="heroProgress"></div></div>
+    </section>
+
+    <section class="quality-strip" aria-label="Платформын давуу талууд">
+      <div class="q-item"><strong>IndexedDB</strong> database</div>
+      <div class="q-sep"></div>
+      <div class="q-item"><strong>JWT</strong> auth simulation</div>
+      <div class="q-sep"></div>
+      <div class="q-item"><strong>CRUD</strong> admin</div>
+      <div class="q-sep"></div>
+      <div class="q-item"><strong>PWA</strong> offline</div>
+      <div class="q-sep"></div>
+      <div class="q-item"><strong>i18n</strong> MN/EN</div>
+      <div class="q-sep"></div>
+      <div class="q-item"><strong>ARIA</strong> keyboard ready</div>
+    </section>
+
+    <section class="genre-bar" id="genreBar" aria-label="Киноны төрөл"></section>
+
+    <section class="section fade-up" data-home-section>
+      <div class="section-header">
+        <h2 class="section-title">Эрэлттэй <span>#1–10</span></h2>
+        <button class="section-link" data-action="tab" data-tab="movies">Бүгд үзэх ›</button>
+      </div>
+      <div class="carousel-wrap">
+        <button class="carousel-btn prev" data-action="scroll-left" aria-label="Өмнөх">‹</button>
+        <div class="carousel" id="trending"></div>
+        <button class="carousel-btn next" data-action="scroll-right" aria-label="Дараах">›</button>
+      </div>
+    </section>
+
+    <section class="section fade-up" data-home-section>
+      <div class="section-header">
+        <h2 class="section-title">Үргэлжлүүлэн <span>үзэх</span></h2>
+        <button class="section-link" data-action="tab" data-tab="history">Түүх харах ›</button>
+      </div>
+      <div class="carousel-wrap">
+        <div class="carousel wide-carousel" id="continueWatching"></div>
+      </div>
+    </section>
+
+    <section class="section fade-up" data-home-section>
+      <div class="section-header">
+        <h2 class="section-title">🎬 <span>3D</span> & IMAX</h2>
+        <button class="section-link" data-action="filter-quick" data-filter="3d">Бүгд ›</button>
+      </div>
+      <div class="carousel-wrap">
+        <button class="carousel-btn prev" data-action="scroll-left" aria-label="Өмнөх">‹</button>
+        <div class="carousel" id="carousel3d"></div>
+        <button class="carousel-btn next" data-action="scroll-right" aria-label="Дараах">›</button>
+      </div>
+    </section>
+
+    <section class="spotlight-section fade-up" id="spotlightSection" data-home-section></section>
+
+    <section class="section fade-up" data-home-section>
+      <div class="section-header">
+        <h2 class="section-title">Танд санал болгох <span>алгоритм</span></h2>
+        <button class="section-link" data-action="refresh-recommendations">Шинэчлэх ↻</button>
+      </div>
+      <div class="carousel-wrap">
+        <div class="carousel" id="recommendations"></div>
+      </div>
+    </section>
+
+    <section class="section view" id="view-movies" aria-labelledby="moviesTitle">
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Advanced search + full-text filter</p>
+          <h1 id="moviesTitle">Кино сан</h1>
+        </div>
+        <div class="toolbar">
+          <input id="movieSearch" class="field" placeholder="Нэр, тайлбар, төрөл хайх..." autocomplete="off" />
+          <select id="genreFilter" class="field"><option value="">Бүх төрөл</option></select>
+          <select id="sortFilter" class="field">
+            <option value="popular">Эрэлттэй</option>
+            <option value="rating">Үнэлгээ өндөр</option>
+            <option value="newest">Шинэ</option>
+            <option value="az">A-Z</option>
+          </select>
+        </div>
+      </div>
+      <div class="movie-grid" id="movieGrid"></div>
+    </section>
+
+    <section class="section view" id="view-watchlist" aria-labelledby="watchlistTitle">
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Persistent per-profile storage</p>
+          <h1 id="watchlistTitle">Миний жагсаалт</h1>
+        </div>
+        <span id="watchlistCount" class="muted"></span>
+      </div>
+      <div class="movie-grid" id="watchlistGrid"></div>
+    </section>
+
+    <section class="section view" id="view-history" aria-labelledby="historyTitle">
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Per-user / per-profile tracking</p>
+          <h1 id="historyTitle">Үзсэн түүх</h1>
+        </div>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </section>
+
+    <section class="section view" id="view-profiles" aria-labelledby="profilesTitle">
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Multiple profiles per account</p>
+          <h1 id="profilesTitle">Профайл удирдлага</h1>
+        </div>
+      </div>
+      <div class="profile-grid" id="profilesGrid"></div>
+      <form class="inline-form" id="profileForm">
+        <input class="field" id="profileName" placeholder="Шинэ профайлын нэр" required />
+        <select class="field" id="profileMaturity">
+          <option value="all">Бүх нас</option>
+          <option value="13">13+</option>
+          <option value="16">16+</option>
+        </select>
+        <button class="btn-primary" type="submit">Профайл нэмэх</button>
+      </form>
+    </section>
+
+    <section class="section view" id="view-plans" aria-labelledby="plansTitle">
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Payment simulation</p>
+          <h1 id="plansTitle">Subscription tiers</h1>
+        </div>
+      </div>
+      <div class="plans-grid" id="plansGrid"></div>
+    </section>
+
+    <section class="section view" id="view-admin" aria-labelledby="adminTitle">
+      <div class="page-header">
+        <div>
+          <p class="eyebrow">Admin dashboard + analytics + CRUD</p>
+          <h1 id="adminTitle">Админ удирдлага</h1>
+        </div>
+      </div>
+
+      <div class="dashboard-grid" id="analyticsCards"></div>
+
+      <div class="admin-layout">
+        <form class="admin-form" id="movieForm">
+          <h3>Кино нэмэх / засах</h3>
+          <input type="hidden" id="movieId">
+          <input class="field" id="movieTitle" placeholder="Гарчиг" required>
+          <input class="field" id="movieGenre" placeholder="Төрөл" required>
+          <input class="field" id="movieGenreKey" placeholder="genre key: action, sci-fi..." required>
+          <textarea class="field" id="movieDesc" placeholder="Тайлбар" required></textarea>
+          <div class="two-col">
+            <input class="field" id="movieYear" type="number" placeholder="Он" required>
+            <input class="field" id="movieRating" type="number" step="0.1" min="0" max="10" placeholder="Rating" required>
+          </div>
+          <div class="two-col">
+            <input class="field" id="movieDuration" placeholder="2ц 10м" required>
+            <input class="field" id="movieAge" placeholder="16+" value="16+">
+          </div>
+          <input class="field" id="movieImg" placeholder="Poster image URL" required>
+          <input class="field" id="movieImgWide" placeholder="Wide image URL" required>
+          <input class="field" id="movieVideo" placeholder="Video URL">
+          <label class="check"><input type="checkbox" id="movieIs3D"> 3D / IMAX</label>
+          <label class="check"><input type="checkbox" id="movieMongolian"> Монгол кино</label>
+          <div class="button-row">
+            <button class="btn-primary" type="submit">Хадгалах</button>
+            <button class="btn-secondary" type="button" data-action="admin-clear">Цэвэрлэх</button>
+          </div>
+        </form>
+
+        <div class="admin-table-wrap">
+          <h3>Контентын жагсаалт</h3>
+          <div class="admin-table" id="adminMovies"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="live-chat" id="liveChat" aria-label="Live chat simulation">
+    <button class="chat-toggle" data-action="toggle-chat">Live chat 💬</button>
+    <div class="chat-panel" id="chatPanel">
+      <div class="chat-header">
+        <strong>Cine Mongolia Live Chat</strong>
+        <button data-action="toggle-chat" aria-label="Хаах">×</button>
+      </div>
+      <div class="chat-body" id="chatMessages"></div>
+      <form class="chat-form" id="chatForm">
+        <input class="field" id="chatInput" placeholder="Сэтгэгдэл бичих..." autocomplete="off">
+        <button class="btn-primary" type="submit">Илгээх</button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
+    <button class="search-close" data-action="close-search" aria-label="Хайлт хаах">✕</button>
+    <h2 id="searchTitle" class="sr-only">Кино хайх</h2>
+    <input class="search-overlay-input" id="searchInput" placeholder="Кино, цуврал хайх..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <div class="modal-overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="modal compact" role="document">
+      <button class="modal-close floating" data-action="close-auth">✕</button>
+      <div class="auth-tabs">
+        <button class="active" data-auth-tab="login">Нэвтрэх</button>
+        <button data-auth-tab="signup">Бүртгүүлэх</button>
+      </div>
+
+      <form class="auth-form active" id="loginForm">
+        <h2 id="authTitle">Нэвтрэх</h2>
+        <p class="muted">Demo: admin@cinemongolia.mn / admin123 эсвэл user@cinemongolia.mn / user123</p>
+        <input class="field" id="loginEmail" type="email" placeholder="Имэйл" required>
+        <input class="field" id="loginPassword" type="password" placeholder="Нууц үг" required>
+        <button class="btn-primary" type="submit">Нэвтрэх</button>
+      </form>
+
+      <form class="auth-form" id="signupForm">
+        <h2>Бүртгүүлэх</h2>
+        <input class="field" id="signupName" placeholder="Нэр" required>
+        <input class="field" id="signupEmail" type="email" placeholder="Имэйл" required>
+        <input class="field" id="signupPassword" type="password" placeholder="Нууц үг" minlength="6" required>
+        <button class="btn-primary" type="submit">Аккаунт үүсгэх</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" role="document">
+      <div class="modal-hero">
+        <img id="modalImg" src="" alt="" class="modal-hero-img">
+        <div class="modal-hero-overlay"></div>
+        <button class="modal-close" data-action="close-modal" aria-label="Хаах">✕</button>
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-tags" id="modalTags"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-actions">
+          <button class="btn-primary" data-action="play-current">▶ Үзэх</button>
+          <button class="btn-secondary" id="modalWlBtn" data-action="toggle-watchlist-current">Жагсаалтад нэмэх</button>
+        </div>
+
+        <div class="reviews">
+          <div class="section-header small">
+            <h3>Үнэлгээ ба сэтгэгдэл</h3>
+            <span id="reviewSummary" class="muted"></span>
+          </div>
+          <form class="review-form" id="reviewForm">
+            <select class="field" id="reviewRating" required>
+              <option value="5">★★★★★ 5</option>
+              <option value="4">★★★★ 4</option>
+              <option value="3">★★★ 3</option>
+              <option value="2">★★ 2</option>
+              <option value="1">★ 1</option>
+            </select>
+            <input class="field" id="reviewText" placeholder="Сэтгэгдэл..." required>
+            <button class="btn-secondary" type="submit">Илгээх</button>
+          </form>
+          <div id="reviewList" class="review-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="player-overlay" id="playerOverlay" role="dialog" aria-modal="true">
+    <div class="player-video-wrap" id="playerWrap">
+      <video class="player-video" id="playerVideo" playsinline></video>
+      <iframe class="player-embed" id="playerEmbed" title="Legal streaming player" hidden allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+      <div class="player-fake-video" id="playerFake">
+        <div class="player-spinner" id="playerSpinner"></div>
+        <div class="player-movie-title-big" id="playerBgTitle"></div>
+      </div>
+
+      <div class="player-controls-overlay always" id="playerControls">
+        <div class="player-top-bar">
+          <button class="player-back-btn" data-action="close-player">← Буцах</button>
+          <div class="player-top-title" id="playerTopTitle"></div>
+          <div class="player-top-logo">Cine Mongolia</div>
+        </div>
+
+        <button class="player-center-btn" id="playerCenterBtn" data-action="player-toggle" aria-label="Тоглуулах">
+          <svg id="playerCenterIcon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+
+        <div class="player-bottom">
+          <div class="player-progress-row">
+            <span class="player-time" id="playerCurrentTime">0:00</span>
+            <input class="player-seekbar" id="playerSeek" type="range" min="0" max="100" value="0">
+            <span class="player-time" id="playerDuration">0:00</span>
+          </div>
+          <div class="player-buttons-row">
+            <button class="player-btn" data-action="player-toggle" title="Тоглуулах/Зогсоох">▶</button>
+            <button class="player-btn" data-action="player-back" title="-10с">↺10</button>
+            <button class="player-btn" data-action="player-forward" title="+10с">10↻</button>
+            <button class="player-btn" data-action="player-mute" title="Дуу">🔊</button>
+            <input class="player-vol-slider" id="playerVol" type="range" min="0" max="100" value="85">
+            <div class="player-spacer"></div>
+            <div class="player-quality-badge" id="playerQuality">4K HDR</div>
+            <button class="player-btn" data-action="player-fullscreen" title="Дэлгэц дүүргэх">⛶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo">Cine Mongolia</span>
+        <p class="footer-desc">Frontend + backend simulation бүхий бүрэн ажиллах кино стриминг PWA. Өгөгдөл IndexedDB дээр хадгалагдана.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Функц</h5>
+        <a href="#" data-action="tab" data-tab="movies">Advanced search</a>
+        <a href="#" data-action="tab" data-tab="profiles">Profiles</a>
+        <a href="#" data-action="tab" data-tab="admin">Admin CRUD</a>
+      </div>
+      <div class="footer-col">
+        <h5>Demo users</h5>
+        <a href="#" data-fill-login="admin">admin@cinemongolia.mn</a>
+        <a href="#" data-fill-login="user">user@cinemongolia.mn</a>
+      </div>
+      <div class="footer-col">
+        <h5>Систем</h5>
+        <button class="text-button" data-action="install-pwa">Install PWA</button>
+        <button class="text-button" data-action="reset-db">Reset database</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Cine Mongolia demo. Сургалтын зориулалттай.</p>
+      <button class="text-button" id="languageToggle" data-action="toggle-language">MN / EN</button>
+    </div>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
