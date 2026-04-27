@@ -1,5 +1,5 @@
 export const DB_NAME = 'cine_mongolia_fullstack_db';
-export const DB_VERSION = 5;
+export const DB_VERSION = 6;
 const now = () => new Date().toISOString();
 
 const sampleMovieData = [
